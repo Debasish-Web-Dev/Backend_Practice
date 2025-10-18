@@ -1,7 +1,14 @@
-// import mongoose from "mongoose"; // import the mongoose in connect the database
+// import mongoose from "mongoose"; // import the mongoose in connect the database.
 
 import dotenv from "dotenv";
 import ConnectDB from "./db/index.js";
+import express from "express";
+
+
+const app = express();
+const port = process.env.PORT || 8000;
+
+// that is basically used to config the path of the environment variable.
 
 dotenv.config(
     {
@@ -10,8 +17,26 @@ dotenv.config(
 )
 
 
+// get the request from the user and send the respose to the user.
+app.get("./", (req, res)=>{
+    res.status(200).send("response is sent in my backend");
+})
 
-ConnectDB();
+
+// connect the database.
+// then() is used for the listen the server that the server is running in the correct port or not.
+// catch() is used for the error handling if any error is present in this connection of the server then it give the error in backend.
+ConnectDB()
+.then(()=>{
+    app.listen(port, ()=>{
+        console.log(`the server is liten in ${port} port`);
+        
+    })
+})
+.catch((err) => {
+    console.log("mongodb is given an error: ", err);
+    
+})
 
 
 
